@@ -7,7 +7,7 @@ export default class TicketService {
    */
 
   purchaseTickets(accountId, ...ticketTypeRequests) {
-    if (accountId < 0) {
+    if (accountId < 1) {
       throw new InvalidPurchaseException('accountId must be positive integer');
     }
   }
