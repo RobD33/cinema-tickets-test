@@ -44,7 +44,7 @@ Provide a working implementation of a `TicketService` that:
 ### Throws InvalidPurchaseException if the following criteria are not met:
 * accountid as integer > 0
 * ticketTypeRequests contains only instances of TicketTypeRequest
-* ticketTypeRequests has a maximum length of 25
+* ticketTypeRequests contains a maximum of 25 tickets
 * ticketTypeRequests contains at least one TicketTypeRequest of type ADULT
 * ticketTypeRequests does not contain more TicketTypeRequest of type INFANT than of type ADULT
 
