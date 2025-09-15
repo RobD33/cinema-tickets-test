@@ -2,12 +2,15 @@ import TicketService from '../../src/pairtest/TicketService';
 import TicketTypeRequest from '../../src/pairtest/lib/TicketTypeRequest';
 import ValidateTicketRequest from '../../src/pairtest/lib/ValidateTicketRequest';
 import SeatReservationService from '../../src/thirdparty/seatbooking/SeatReservationService';
+import TicketPaymentService from '../../src/thirdparty/paymentgateway/TicketPaymentService';
 
 jest.mock('../../src/pairtest/lib/ValidateTicketRequest');
 jest.mock('../../src/thirdparty/seatbooking/SeatReservationService');
+jest.mock('../../src/thirdparty/paymentgateway/TicketPaymentService');
 
 const validate = jest.spyOn(ValidateTicketRequest.prototype, 'validate');
 const reserveSeat = jest.spyOn(SeatReservationService.prototype, 'reserveSeat');
+const makePayment = jest.spyOn(TicketPaymentService.prototype, 'makePayment');
 
 describe('TicketService', () => {
   afterEach(() => {
@@ -43,4 +46,14 @@ describe('TicketService', () => {
     expect(reserveSeat).toHaveBeenCalledTimes(1);
   });
 
+  it('Calls TicketPaymentService.makePayment once with accountId and correct totalAmountToPay', () => {
+    const accountId = 12345678;
+    const ticketTypeRequests = [
+      new TicketTypeRequest('ADULT', 4),
+      new TicketTypeRequest('CHILD', 3),
+    ];
+    new TicketService().purchaseTickets(accountId, ...ticketTypeRequests);
+    expect(makePayment).toHaveBeenCalledTimes(1);
+    expect(makePayment).toHaveBeenCalledWith(accountId, 145);
+  });
 });
