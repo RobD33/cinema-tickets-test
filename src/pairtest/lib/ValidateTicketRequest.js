@@ -14,6 +14,7 @@ export default class ValidateTicketRequest {
   validate() {
     this.#validateId();
     this.#validateTypes();
+    this.#validateMinAdults();
   }
 
   #validateId() {
@@ -25,6 +26,12 @@ export default class ValidateTicketRequest {
   #validateTypes() {
     if (!this.#ticketTypeRequests.every((ticketTypeRequest) => ticketTypeRequest instanceof TicketTypeRequest)) {
       throw new InvalidPurchaseException('All arguments after accountId must be of type TicketTypeRequest');
+    }
+  }
+
+  #validateMinAdults() {
+    if(!this.#ticketTypeRequests.some((ticketTypeRequest) => ticketTypeRequest.getTicketType() === 'ADULT' && ticketTypeRequest.getNoOfTickets() > 0)) {
+      throw new InvalidPurchaseException('Ticket requests require at least one adult ticket');
     }
   }
 }

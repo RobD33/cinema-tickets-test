@@ -36,4 +36,19 @@ describe('TicketService', () => {
       expect(e.message).toEqual('All arguments after accountId must be of type TicketTypeRequest');
     }
   });
+
+  it.each([
+    [[new TicketTypeRequest('CHILD', 1)]],
+    [[new TicketTypeRequest('INFANT', 2)]],
+    [[new TicketTypeRequest('CHILD', 3), new TicketTypeRequest('INFANT', 2)]],
+    [[new TicketTypeRequest('ADULT', 0)]],
+  ])('Throws an InvalidPurchaseException if there is not at least one adult ticket', (ticketTypeRequests) => {
+    expect.assertions(2);
+    try {
+      new ValidateTicketRequest(1, ticketTypeRequests).validate();
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidPurchaseException);
+      expect(e.message).toEqual('Ticket requests require at least one adult ticket');
+    }
+  });
 });
