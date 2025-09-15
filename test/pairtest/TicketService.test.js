@@ -11,4 +11,14 @@ describe('TicketService', () => {
       expect(e.message).toEqual('accountId must be positive integer');
     }
   })
+
+  it.each(['hello', {}, undefined])('throws InvalidPurchaseException if accountId is not an integer', (accountId) => {
+    expect.assertions(2);
+    try{
+      new TicketService().purchaseTickets(accountId)
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidPurchaseException);
+      expect(e.message).toEqual('accountId must be positive integer');
+    }
+  })
 })
