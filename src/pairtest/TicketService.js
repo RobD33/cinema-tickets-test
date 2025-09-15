@@ -8,6 +8,9 @@ export default class TicketService {
 
   purchaseTickets(accountId, ...ticketTypeRequests) {
     this.#validateId(accountId);
+    if (!ticketTypeRequests.every((ticketTypeRequest) => ticketTypeRequest instanceof TicketTypeRequest)) {
+      throw new InvalidPurchaseException('All arguments after accountId must be of type TicketTypeRequest');
+    }
   }
 
   #validateId(accountId) {

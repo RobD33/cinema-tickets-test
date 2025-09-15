@@ -30,7 +30,7 @@ describe('TicketService', () => {
   ])('Throws an InvalidPurchaseException if passed anything other than accountId and TicketTypeRequests', (ticketTypeRequests) => {
     expect.assertions(2);
     try{
-      new TicketService().purchaseTickets(1, ticketTypeRequests);
+      new TicketService().purchaseTickets(1, ...ticketTypeRequests);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidPurchaseException);
       expect(e.message).toEqual('All arguments after accountId must be of type TicketTypeRequest');
