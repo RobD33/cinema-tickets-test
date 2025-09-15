@@ -64,4 +64,27 @@ describe('TicketService', () => {
       expect(e.message).toEqual('Ticket requests must contain at least one adult ticket per infant ticket');
     }
   });
+
+  it.each([
+    [[new TicketTypeRequest('ADULT', 26)]],
+    [[new TicketTypeRequest('ADULT', 10), new TicketTypeRequest('CHILD', 16)]],
+    [[new TicketTypeRequest('ADULT', 15), new TicketTypeRequest('INFANT', 15)]],
+    [[new TicketTypeRequest('ADULT', 8), new TicketTypeRequest('CHILD', 10), new TicketTypeRequest('INFANT', 8)]],
+    [[
+      new TicketTypeRequest('ADULT', 3),
+      new TicketTypeRequest('CHILD', 5),
+      new TicketTypeRequest('INFANT', 6),
+      new TicketTypeRequest('ADULT', 8),
+      new TicketTypeRequest('CHILD', 6),
+      new TicketTypeRequest('INFANT', 2),
+    ]],
+  ])('Throws an InvalidPurchaseException if there are more than 25 tickets total requested', (ticketTypeRequests) => {
+    expect.assertions(2);
+    try {
+      new ValidateTicketRequest(1, ticketTypeRequests).validate();
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidPurchaseException);
+      expect(e.message).toEqual('Maximum of 25 tickets per request');
+    }
+  })
 });
