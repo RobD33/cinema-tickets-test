@@ -15,6 +15,7 @@ export default class ValidateTicketRequest {
     this.#validateId();
     this.#validateTypes();
     this.#validateMinAdults();
+    this.#validateInfantSeat();
   }
 
   #validateId() {
@@ -32,6 +33,19 @@ export default class ValidateTicketRequest {
   #validateMinAdults() {
     if(!this.#ticketTypeRequests.some((ticketTypeRequest) => ticketTypeRequest.getTicketType() === 'ADULT' && ticketTypeRequest.getNoOfTickets() > 0)) {
       throw new InvalidPurchaseException('Ticket requests require at least one adult ticket');
+    }
+  }
+
+  #validateInfantSeat() {
+    const tally = {
+      ADULT: 0,
+      INFANT: 0,
+    }
+    this.#ticketTypeRequests.forEach(ticketTypeRequest => {
+      tally[ticketTypeRequest.getTicketType()] += ticketTypeRequest.getNoOfTickets()
+    });
+    if (tally.INFANT > tally.ADULT) {
+      throw new InvalidPurchaseException('Ticket requests must contain at least one adult ticket per infant ticket');
     }
   }
 }
