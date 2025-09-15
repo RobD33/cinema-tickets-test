@@ -87,4 +87,13 @@ describe('TicketService', () => {
       expect(e.message).toEqual('Maximum of 25 tickets per request');
     }
   });
+
+  it('does not throw for a valid request', () => {
+    const validInput = [
+      new TicketTypeRequest('ADULT', 10),
+      new TicketTypeRequest('CHILD', 10),
+      new TicketTypeRequest('INFANT', 5),
+    ]
+    new ValidateTicketRequest(1, validInput).validate();
+  })
 });
