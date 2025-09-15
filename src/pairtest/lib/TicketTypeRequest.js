@@ -1,3 +1,5 @@
+import Rules from "./Rules";
+
 /**
  * Immutable Object.
  */
@@ -28,5 +30,5 @@ export default class TicketTypeRequest {
     return this.#type;
   }
 
-  #Type = ['ADULT', 'CHILD', 'INFANT'];
+  #Type = Rules.getTypesAsArray();
 }

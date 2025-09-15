@@ -93,7 +93,7 @@ describe('TicketService', () => {
       new TicketTypeRequest('ADULT', 10),
       new TicketTypeRequest('CHILD', 10),
       new TicketTypeRequest('INFANT', 5),
-    ]
+    ];
     new ValidateTicketRequest(1, validInput).validate();
-  })
+  });
 });

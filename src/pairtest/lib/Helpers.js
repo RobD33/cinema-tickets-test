@@ -1,10 +1,11 @@
+import Rules from "./Rules";
+
 export default class Helpers {
   static tallyTicketTypes(ticketTypeRequests) {
-    const tally = {
-      ADULT: 0,
-      CHILD: 0,
-      INFANT: 0,
-    };
+    const tally = {};
+    Rules.getTypesAsArray().forEach((type) => {
+      tally[type] = 0;
+    });
     ticketTypeRequests.forEach(ticket => {
       tally[ticket.getTicketType()] += ticket.getNoOfTickets();
     });

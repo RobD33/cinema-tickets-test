@@ -1,11 +1,10 @@
 import InvalidPurchaseException from "./InvalidPurchaseException";
 import TicketTypeRequest from "./TicketTypeRequest";
 import Helpers from "./Helpers";
+import Rules from "./Rules";
 
 export default class ValidateTicketRequest {
-  #maximumtickets = 25;
   #accountId;
-
   #ticketTypeRequests;
 
   constructor(accountId, ticketTypeRequests) {
@@ -40,18 +39,21 @@ export default class ValidateTicketRequest {
   }
 
   #validateInfantSeat() {
-    const { ADULT, INFANT } = Helpers.tallyTicketTypes(this.#ticketTypeRequests);
+    const tally = Helpers.tallyTicketTypes(this.#ticketTypeRequests);
+    const ADULT = tally[Rules.getTypes().ADULT];
+    const INFANT = tally[Rules.getTypes().INFANT];
     if (INFANT > ADULT) {
       throw new InvalidPurchaseException('Ticket requests must contain at least one adult ticket per infant ticket');
     }
   }
 
   #validateTotalTicketCount() {
+    const max = Rules.getMaximumTickets();
     const totalTickets = this.#ticketTypeRequests.reduce((acc, ticketTypeRequest) => {
       return acc + ticketTypeRequest.getNoOfTickets();
     }, 0);
-    if(totalTickets > this.#maximumtickets) {
-      throw new InvalidPurchaseException(`Maximum of ${this.#maximumtickets} tickets per request`);
+    if(totalTickets > max) {
+      throw new InvalidPurchaseException(`Maximum of ${max} tickets per request`);
     }
   }
 }

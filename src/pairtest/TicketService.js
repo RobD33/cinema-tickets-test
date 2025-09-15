@@ -2,6 +2,7 @@ import ValidateTicketRequest from './lib/ValidateTicketRequest.js';
 import SeatReservationService from '../thirdparty/seatbooking/SeatReservationService';
 import TicketPaymentService from '../thirdparty/paymentgateway/TicketPaymentService';
 import Helpers from './lib/Helpers.js';
+import Rules from './lib/Rules.js';
 
 export default class TicketService {
   #seatReservationService = new SeatReservationService();
@@ -18,17 +19,14 @@ export default class TicketService {
   }
 
   #calculateNumberOfSeats(ticketTypeRequests) {
-    const { ADULT, CHILD } = Helpers.tallyTicketTypes(ticketTypeRequests);
-    return ADULT + CHILD;
+    const tally = Helpers.tallyTicketTypes(ticketTypeRequests);
+    const types = Rules.getTypes();
+    return tally[types.ADULT] + tally[types.CHILD];
   }
 
   #calculateTotalPrice(ticketTypeRequests) {
     const tally = Helpers.tallyTicketTypes(ticketTypeRequests);
-    const prices = {
-      ADULT: 25,
-      CHILD: 15,
-      INFANT: 0,
-    };
+    const prices = Rules.getPrices();
     let totalPrice = 0;
     for(let type in tally) {
       totalPrice += tally[type] * prices[type];
