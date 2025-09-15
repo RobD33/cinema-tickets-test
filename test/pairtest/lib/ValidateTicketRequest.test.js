@@ -86,5 +86,5 @@ describe('TicketService', () => {
       expect(e).toBeInstanceOf(InvalidPurchaseException);
       expect(e.message).toEqual('Maximum of 25 tickets per request');
     }
-  })
+  });
 });

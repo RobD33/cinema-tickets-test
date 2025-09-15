@@ -1,5 +1,6 @@
 import InvalidPurchaseException from "./InvalidPurchaseException";
 import TicketTypeRequest from "./TicketTypeRequest";
+import Helpers from "./Helpers";
 
 export default class ValidateTicketRequest {
   #maximumtickets = 25;
@@ -39,14 +40,8 @@ export default class ValidateTicketRequest {
   }
 
   #validateInfantSeat() {
-    const tally = {
-      ADULT: 0,
-      INFANT: 0,
-    }
-    this.#ticketTypeRequests.forEach(ticketTypeRequest => {
-      tally[ticketTypeRequest.getTicketType()] += ticketTypeRequest.getNoOfTickets()
-    });
-    if (tally.INFANT > tally.ADULT) {
+    const { ADULT, INFANT } = Helpers.tallyTicketTypes(this.#ticketTypeRequests);
+    if (INFANT > ADULT) {
       throw new InvalidPurchaseException('Ticket requests must contain at least one adult ticket per infant ticket');
     }
   }

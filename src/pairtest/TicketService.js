@@ -1,5 +1,6 @@
 import ValidateTicketRequest from './lib/ValidateTicketRequest.js';
 import SeatReservationService from '../thirdparty/seatbooking/SeatReservationService';
+import Helpers from './lib/Helpers.js';
 
 export default class TicketService {
   #seatReservationService = new SeatReservationService();
@@ -11,14 +12,7 @@ export default class TicketService {
   }
 
   #calculateNumberOfSeats(ticketTypeRequests) {
-    const tally = {
-      ADULT: 0,
-      CHILD: 0,
-      INFANT: 0,
-    }
-    ticketTypeRequests.forEach(ticketTypeRequest => {
-      tally[ticketTypeRequest.getTicketType()] += ticketTypeRequest.getNoOfTickets()
-    });
-    return tally.ADULT + tally.CHILD;
+    const { ADULT, CHILD } = Helpers.tallyTicketTypes(ticketTypeRequests);
+    return ADULT + CHILD;
   }
 }

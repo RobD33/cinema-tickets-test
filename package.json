@@ -20,7 +20,9 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/pairtest/TicketService.js"
+      "src/pairtest/TicketService.js",
+      "src/pairtest/lib/ValidateTicketRequest.js",
+      "src/pairtest/lib/Helpers.js"
     ]
   }
 }
