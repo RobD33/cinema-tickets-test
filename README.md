@@ -37,3 +37,22 @@ Provide a working implementation of a `TicketService` that:
 * Calculates the correct amount for the requested tickets and makes a payment request to the `TicketPaymentService`.
 * Calculates the correct no of seats to reserve and makes a seat reservation request to the `SeatReservationService`.
 * Rejects any invalid ticket purchase requests. It is up to you to identify what should be deemed as an invalid purchase request
+
+------------------
+
+## Required Behaviours
+### Throws InvalidPurchaseException if the following criteria are not met:
+* accountid as integer > 0
+* ticketTypeRequests contains only instances of TicketTypeRequest
+* ticketTypeRequests has a maximum length of 25
+* ticketTypeRequests contains at least one TicketTypeRequest of type ADULT
+* ticketTypeRequests does not contain more TicketTypeRequest of type INFANT than of type ADULT
+
+### Calls SeatReservationService.reserveSeat once with accountId and correct number of seats
+* INFANT tickets do not require a seat
+### Calls TicketPaymentService.makePayment once with accountId and correct totalAmountToPay
+|   Ticket Type    |     Price   |
+| ---------------- | ----------- |
+|    INFANT        |    £0       |
+|    CHILD         |    £15      |
+|    ADULT         |    £25      |
