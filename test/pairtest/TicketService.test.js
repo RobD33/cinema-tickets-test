@@ -5,20 +5,20 @@ describe('TicketService', () => {
   it.each([-1, -10, 0, -999])('throws InvalidPurchaseException if accountId is less than 1 (%s)', (accountId) => {
     expect.assertions(2);
     try{
-      new TicketService().purchaseTickets(accountId)
+      new TicketService().purchaseTickets(accountId);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidPurchaseException);
       expect(e.message).toEqual('accountId must be positive integer');
     }
-  })
+  });
 
   it.each(['hello', {}, undefined])('throws InvalidPurchaseException if accountId is not an integer', (accountId) => {
     expect.assertions(2);
     try{
-      new TicketService().purchaseTickets(accountId)
+      new TicketService().purchaseTickets(accountId);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidPurchaseException);
       expect(e.message).toEqual('accountId must be positive integer');
     }
-  })
-})
+  });
+});
